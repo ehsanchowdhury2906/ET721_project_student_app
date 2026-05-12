@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1 class="title">New User Sign-up</h1>
+<form method="post" class="signup_form">
+    <section class="form_section">
+        <input type="text" name="username" placeholder="Enter username..." required/>
+    </section>
+    <section class="form_section">
+        <input type="email" name="email" placeholder="Type email..." required/>
+    </section>
+    <section class="form_section">
+        <input type="password" name="password" placeholder="Enter password" required/>
+    </section>
+    <button type="submit" class="btn_signup">Sign Up</button>
+</form>
+<div class="signup_div">
+    <p>Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+</div>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <p class="flash_msg">{{ msg }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+{% endblock %}
