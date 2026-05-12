@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block sitetitle %}Blog{% endblock %}
+
+{% block content %}
+<h1 class="title">Student Blog</h1>
+
+<form method="POST" action="{{ url_for('add_post') }}" class="signup_form">
+    <section class="form_section">
+        <input type="text" name="title" placeholder="Post title..." required/>
+    </section>
+    <section class="form_section">
+        <textarea name="content" placeholder="Write your post..." required></textarea>
+    </section>
+    <button type="submit" class="btn_signup">Publish Post</button>
+</form>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <p class="flash_msg">{{ msg }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="posts_list">
+    {% for post in posts %}
+    <div class="post_card">
+        <h2 class="post_title"><a href="{{ url_for('view_post', post_id=post['id']) }}">{{ post['title'] }}</a></h2>
+        <p class="post_meta">By {{ post['username'] }} | {{ post['created_at'] }}</p>
+        <p class="post_preview">{{ post['content'][:150] }}...</p>
+        <div class="post_actions">
+            <a href="{{ url_for('view_post', post_id=post['id']) }}" class="btn_complete">Read More</a>
+            {% if post['username'] == session['username'] %}
+                <a href="{{ url_for('delete_post', post_id=post['id']) }}" class="btn_delete">Delete</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="signup_div">
+    <a href="{{ url_for('todo') }}">← Back to To-Do List</a> |
+    <a href="{{ url_for('logout') }}">Sign Out</a>
+</div>
+{% endblock %}

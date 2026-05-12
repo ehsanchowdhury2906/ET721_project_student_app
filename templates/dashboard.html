@@ -5,4 +5,7 @@
 {% block content %}
 <h1 class="title">Welcome, {{ username }}! 👋</h1>
 <p>You are logged in successfully.</p>
+<div class="signup_div">
+    <p><a href="{{ url_for('todo') }}">✅ To-Do List</a></p>
+</div>
 {% endblock %}

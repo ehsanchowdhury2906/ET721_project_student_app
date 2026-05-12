@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% block sitetitle %}{{ post['title'] }}{% endblock %}
+
+{% block content %}
+<h1 class="title">{{ post['title'] }}</h1>
+<p class="post_meta">By {{ post['username'] }} | {{ post['created_at'] }}</p>
+<p class="post_content">{{ post['content'] }}</p>
+
+<hr class="divider">
+
+<h2 class="title">Comments</h2>
+
+{% for comment in comments %}
+<div class="comment_card">
+    <p class="post_meta">{{ comment['username'] }} | {{ comment['created_at'] }}</p>
+    <p>{{ comment['comment'] }}</p>
+</div>
+{% endfor %}
+
+<form method="POST" action="{{ url_for('add_comment', post_id=post['id']) }}" class="signup_form">
+    <section class="form_section">
+        <textarea name="comment" placeholder="Write a comment..." required></textarea>
+    </section>
+    <button type="submit" class="btn_signup">Add Comment</button>
+</form>
+
+<div class="signup_div">
+    <a href="{{ url_for('blog') }}">← Back to Blog</a> |
+    <a href="{{ url_for('logout') }}">Sign Out</a>
+</div>
+{% endblock %}

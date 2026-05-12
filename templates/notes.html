@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block sitetitle %}My Notes{% endblock %}
+
+{% block content %}
+<h1 class="title">My Notes</h1>
+
+<form method="POST" action="{{ url_for('upload_image') }}" enctype="multipart/form-data" class="signup_form">
+    <section class="form_section">
+        <input type="text" name="subject" placeholder="Subject or topic..." required/>
+    </section>
+    <section class="form_section">
+        <input type="file" name="image" accept="image/*" required/>
+    </section>
+    <button type="submit" class="btn_signup">Upload Image</button>
+</form>
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for msg in messages %}
+            <p class="flash_msg">{{ msg }}</p>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
+<div class="notes_grid">
+    {% for image in images %}
+    <div class="note_card">
+        <img src="{{ url_for('static', filename='uploads/' + image['filename']) }}" alt="{{ image['subject'] }}"/>
+        <p>{{ image['subject'] }}</p>
+        <p class="post_meta">{{ image['uploaded_at'] }}</p>
+        <a href="{{ url_for('static', filename='uploads/' + image['filename']) }}" download class="btn_complete">Download</a>
+        <a href="{{ url_for('delete_image', image_id=image['id']) }}" class="btn_delete">Delete</a>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="signup_div">
+    <p>Welcome, {{ session['username'] }}! | <a href="{{ url_for('todo') }}">✅ To-Do</a> | <a href="{{ url_for('blog') }}">📝 Blog</a> | <a href="{{ url_for('logout') }}">Sign Out</a></p>
+</div>
+{% endblock %}

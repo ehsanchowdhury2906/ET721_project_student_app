@@ -50,3 +50,122 @@
 .flash_msg {
     color: crimson;
 }
+
+/* todo */
+.category_select {
+    padding: 0.5rem;
+    width: 100%;
+    border: none;
+}
+.todo_table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 2rem;
+}
+.todo_table th, .todo_table td {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+.todo_table th {
+    background-color: darkblue;
+    color: white;
+}
+.btn_complete {
+    background-color: forestgreen;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-right: 5px;
+}
+.btn_delete {
+    background-color: crimson;
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 5px;
+    text-decoration: none;
+}
+.completed_row td {
+    text-decoration: line-through;
+    color: gray;
+}
+
+/* blog */
+.form_section textarea {
+    padding: 0.5rem;
+    width: 100%;
+    border: none;
+    height: 120px;
+    resize: vertical;
+}
+.posts_list {
+    margin-top: 2rem;
+}
+.post_card {
+    background-color: white;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.post_title a {
+    color: darkblue;
+    text-decoration: none;
+}
+.post_title a:hover {
+    color: crimson;
+}
+.post_meta {
+    color: gray;
+    font-size: 0.85rem;
+    margin: 0.3rem 0;
+}
+.post_content {
+    margin: 1rem 0;
+}
+.post_actions {
+    margin-top: 0.5rem;
+}
+.comment_card {
+    background-color: white;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+.divider {
+    margin: 2rem 0;
+    border: none;
+    border-top: 1px solid #ccc;
+}
+
+/* notes */
+.notes_grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin-top: 2rem;
+}
+.note_card {
+    background-color: white;
+    padding: 1rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+.note_card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+    margin-bottom: 0.5rem;
+}
+.note_card p {
+    color: darkblue;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+.note_card a {
+    text-decoration: none;
+}
