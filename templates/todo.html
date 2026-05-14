@@ -27,33 +27,21 @@
     {% endif %}
 {% endwith %}
 
-<table class="todo_table">
-    <thead>
-        <tr>
-            <th>Task</th>
-            <th>Category</th>
-            <th>Status</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for task in tasks %}
-        <tr class="{{ 'completed_row' if task['completed'] == 1 }}">
-            <td>{{ task['task'] }}</td>
-            <td>{{ task['category'] }}</td>
-            <td>{{ 'Done' if task['completed'] == 1 else 'Pending' }}</td>
-            <td>
-                {% if task['completed'] == 0 %}
-                    <a href="{{ url_for('complete_task', task_id=task['id']) }}" class="btn_complete">Complete</a>
-                {% endif %}
-                <a href="{{ url_for('delete_task', task_id=task['id']) }}" class="btn_delete">Delete</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<ul class="task_list">
+    {% for task in tasks %}
+    <li class="task_item {{ 'task_done' if task['completed'] == 1 }}">
+        <span>{{ task['task'] }} <small>({{ task['category'] }})</small></span>
+        <span class="task_actions">
+            {% if task['completed'] == 0 %}
+                <a href="{{ url_for('complete_task', task_id=task['id']) }}" class="btn_complete">Done</a>
+            {% endif %}
+            <a href="{{ url_for('delete_task', task_id=task['id']) }}" class="btn_delete">Delete</a>
+        </span>
+    </li>
+    {% endfor %}
+</ul>
 
 <div class="signup_div">
-    <p>Welcome, {{ session['username'] }}! | <a href="{{ url_for('blog') }}">Blog</a> | <a href="{{ url_for('notes') }}">Notes</a> | <a href="{{ url_for('logout') }}">Sign Out</a></p>
+    <p>Welcome, {{ session['username'] }}! | <a href="{{ url_for('dashboard') }}">Dashboard</a> | <a href="{{ url_for('blog') }}">Blog</a> | <a href="{{ url_for('notes') }}">Notes</a> | <a href="{{ url_for('logout') }}">Sign Out</a></p>
 </div>
 {% endblock %}

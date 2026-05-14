@@ -3,7 +3,7 @@
 {% block sitetitle %}My Notes{% endblock %}
 
 {% block content %}
-<h1 class="title">My Notes</h1>
+<h1 class="title">pictures for notes</h1>
 
 <form method="POST" action="{{ url_for('upload_image') }}" enctype="multipart/form-data" class="signup_form">
     <section class="form_section">
@@ -36,6 +36,6 @@
 </div>
 
 <div class="signup_div">
-    <p>Welcome, {{ session['username'] }}! | <a href="{{ url_for('todo') }}">✅ To-Do</a> | <a href="{{ url_for('blog') }}">📝 Blog</a> | <a href="{{ url_for('logout') }}">Sign Out</a></p>
+    <p>Welcome, {{ session['username'] }}! | <a href="{{ url_for('dashboard') }}">Dashboard</a> | <a href="{{ url_for('todo') }}">To-Do</a> | <a href="{{ url_for('blog') }}">Blog</a> | <a href="{{ url_for('logout') }}">Sign Out</a></p>
 </div>
 {% endblock %}
