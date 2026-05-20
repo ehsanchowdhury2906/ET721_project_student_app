@@ -5,6 +5,7 @@ from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
 app.secret_key = "dev_secret_key"
+app.config['SESSION_PERMANENT'] = False
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 
@@ -40,6 +41,7 @@ def login():
         user = cursor.fetchone()
         conn.close()
         if user:
+            session.permanent = False
             session['username'] = user['username']
             return redirect(url_for('dashboard'))
         else:
@@ -61,6 +63,7 @@ def dashboard():
 @app.route('/logout')
 def logout():
     session.clear()
+    session.modified = True
     return redirect(url_for('login'))
 
 # ------------------
@@ -171,8 +174,28 @@ def view_post(post_id):
     post = cursor.fetchone()
     cursor.execute("SELECT * FROM comments WHERE post_id = ? ORDER BY created_at ASC", (post_id,))
     comments = cursor.fetchall()
+    cursor.execute("SELECT COUNT(*) FROM likes WHERE post_id = ?", (post_id,))
+    like_count = cursor.fetchone()[0]
+    cursor.execute("SELECT * FROM likes WHERE post_id = ? AND username = ?", (post_id, session['username']))
+    user_liked = cursor.fetchone()
     conn.close()
-    return render_template('post.html', post=post, comments=comments)
+    return render_template('post.html', post=post, comments=comments, like_count=like_count, user_liked=user_liked)
+
+@app.route('/blog/like/<int:post_id>')
+def like_post(post_id):
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM likes WHERE post_id = ? AND username = ?", (post_id, session['username']))
+    existing = cursor.fetchone()
+    if existing:
+        cursor.execute("DELETE FROM likes WHERE post_id = ? AND username = ?", (post_id, session['username']))
+    else:
+        cursor.execute("INSERT INTO likes (post_id, username) VALUES (?,?)", (post_id, session['username']))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('view_post', post_id=post_id))
 
 @app.route('/blog/comment/<int:post_id>', methods=['POST'])
 def add_comment(post_id):
@@ -194,6 +217,7 @@ def delete_post(post_id):
     cursor = conn.cursor()
     cursor.execute("DELETE FROM posts WHERE id = ?", (post_id,))
     cursor.execute("DELETE FROM comments WHERE post_id = ?", (post_id,))
+    cursor.execute("DELETE FROM likes WHERE post_id = ?", (post_id,))
     conn.commit()
     conn.close()
     return redirect(url_for('blog'))
@@ -251,6 +275,35 @@ def delete_image(image_id):
         conn.commit()
     conn.close()
     return redirect(url_for('notes'))
+
+# ------------------
+# PROFILE ROUTING
+# ------------------
+@app.route('/profile')
+def profile():
+    if 'username' not in session:
+        return redirect(url_for('login'))
+    conn = get_db()
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM tasks WHERE username = ?", (session['username'],))
+    total_tasks = cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM tasks WHERE username = ? AND completed = 1", (session['username'],))
+    completed_tasks = cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM tasks WHERE username = ? AND completed = 0", (session['username'],))
+    pending_tasks = cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM posts WHERE username = ?", (session['username'],))
+    total_posts = cursor.fetchone()[0]
+    cursor.execute("SELECT COUNT(*) FROM images WHERE username = ?", (session['username'],))
+    total_images = cursor.fetchone()[0]
+    conn.close()
+    return render_template('profile.html',
+        username=session['username'],
+        total_tasks=total_tasks,
+        completed_tasks=completed_tasks,
+        pending_tasks=pending_tasks,
+        total_posts=total_posts,
+        total_images=total_images
+    )
 
 # ------------------
 # RUN APP

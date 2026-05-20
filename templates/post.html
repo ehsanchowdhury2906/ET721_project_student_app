@@ -7,6 +7,13 @@
 <p class="post_meta">By {{ post['username'] }} | {{ post['created_at'] }}</p>
 <p class="post_content">{{ post['content'] }}</p>
 
+<div style="margin-bottom: 1rem;">
+    <a href="{{ url_for('like_post', post_id=post['id']) }}" class="btn_complete">
+        {% if user_liked %}❤️ Unlike{% else %}🤍 Like{% endif %}
+    </a>
+    <span class="post_meta" style="margin-left: 0.5rem;">{{ like_count }} likes</span>
+</div>
+
 <hr class="divider">
 
 <h2 class="title">Comments</h2>
@@ -26,8 +33,6 @@
 </form>
 
 <div class="signup_div">
-    <a href="{{ url_for('dashboard') }}">Dashboard</a> |
-    <a href="{{ url_for('blog') }}">← Back to Blog</a> |
-    <a href="{{ url_for('logout') }}">Sign Out</a>
+    <a href="{{ url_for('blog') }}">← Back to Blog</a>
 </div>
 {% endblock %}

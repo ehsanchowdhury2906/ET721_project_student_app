@@ -19,9 +19,9 @@
         <span>🖼️ Notes</span>
         <a href="{{ url_for('notes') }}" class="btn_complete">Go</a>
     </li>
+    <li class="task_item">
+        <span>👤 Profile</span>
+        <a href="{{ url_for('profile') }}" class="btn_complete">Go</a>
+    </li>
 </ul>
-
-<div class="signup_div">
-    <a href="{{ url_for('logout') }}">Sign Out</a>
-</div>
 {% endblock %}

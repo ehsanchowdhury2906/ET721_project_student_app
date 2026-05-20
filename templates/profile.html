@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block sitetitle %}Profile{% endblock %}
+
+{% block content %}
+<h1 class="title">My Profile</h1>
+
+<div class="profile_card">
+    <h2>{{ username }}</h2>
+    <p>Student Learning App Member</p>
+</div>
+
+<div class="stats_grid">
+    <div class="stat_card">
+        <h3>{{ total_tasks }}</h3>
+        <p>Total Tasks</p>
+    </div>
+    <div class="stat_card">
+        <h3>{{ completed_tasks }}</h3>
+        <p>Completed</p>
+    </div>
+    <div class="stat_card">
+        <h3>{{ pending_tasks }}</h3>
+        <p>Pending</p>
+    </div>
+    <div class="stat_card">
+        <h3>{{ total_posts }}</h3>
+        <p>Blog Posts</p>
+    </div>
+    <div class="stat_card">
+        <h3>{{ total_images }}</h3>
+        <p>Notes Uploaded</p>
+    </div>
+</div>
+{% endblock %}
